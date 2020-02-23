@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Task Management Application</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="project">
+  <h1>Projects</h1>
+  <div fxLayout.xs="column" fxLayout="row wrap" fxLayoutGap="10px" ngClass.gt-xs="ml-10">
+    <mat-card
+      class="project-card"
+      fxFlex.sm="0 1 calc(50%-10px)"
+      fxFlex.md="0 1 calc(33%-10px)"
+      fxFlex.gt-md="0 1 calc(25%-10px)"
+      *ngFor="let project of projects"
+      [ngStyle]="{'border-color': project.complete ? '#53BA06' : '#FE5555'}"
+    >
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{project.name}}</mat-card-title>
+        <mat-card-subtitle>{{project.duration}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content flex>
+        <p>{{project.description}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="primary">EDIT</button>
+        <button mat-stroked-button color="warn">DELETE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

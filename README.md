@@ -10,4 +10,6 @@ run app:\
 superuser\
 `http://localhost:8000/`\
 `user: admin`\
-`password: admin_password`
+`password: admin_password`\
+
+`DEBUG: python3 manage.py migrate --run-syncdb`
