@@ -9,6 +9,7 @@ import { ApiService } from './api.service';
 })
 export class AppComponent {
   projects = [ ]
+  selectedProject = 1
   constructor(private api: ApiService) {
     this.getProjects();
   }
@@ -21,5 +22,8 @@ export class AppComponent {
         console.log(error);
       }
     )
+  }
+  setSelectedProject = (project) => {
+    this.selectedProject = project.id;
   }
 }
