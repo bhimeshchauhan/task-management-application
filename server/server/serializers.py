@@ -2,10 +2,10 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from .models import Project, Task, SubTask
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'projectId', 'name', 'description', 'duration', 'avatar', 'color', 'complete')
+        fields = ('id', 'projectId', 'name', 'description', 'start', 'avatar', 'color', 'complete')
 
 
 class TaskSerializer(serializers.ModelSerializer):

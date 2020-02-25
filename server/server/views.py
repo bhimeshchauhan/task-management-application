@@ -1,11 +1,17 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .serializers import ProjectSerializer, TaskSerializer, SubTaskSerializer
+from rest_framework.response import Response
+from .serializers import TaskSerializer, SubTaskSerializer, ProjectListSerializer
 from .models import Project, Task, SubTask
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectListSerializer
+
+    def list(self, request, *args, **kwargs):
+        projects = Project.objects.all()
+        serializer = ProjectListSerializer(projects, many=True)
+        return Response(serializer.data)
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()

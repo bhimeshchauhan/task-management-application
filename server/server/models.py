@@ -6,7 +6,7 @@ class Project(models.Model):
     projectId = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=32)
     description = models.TextField()
-    duration = models.CharField(max_length=32)
+    start = models.DateTimeField()
     avatar = models.TextField()
     color = models.CharField(max_length=32, default="#FE5555")
     complete = models.BooleanField(default=False)
@@ -18,7 +18,7 @@ class Task(models.Model):
     description = models.CharField(max_length=32)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    projectId = models.OneToOneField(Project, on_delete = models.CASCADE)
+    projectId = models.ForeignKey(Project, on_delete=models.CASCADE)
     complete = models.BooleanField(default=False)
 
 class SubTask(models.Model):
@@ -27,5 +27,5 @@ class SubTask(models.Model):
     description = models.CharField(max_length=32)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    taskId = models.OneToOneField(Task, on_delete = models.CASCADE)
+    taskId = models.ForeignKey(Task, on_delete=models.CASCADE)
     complete = models.BooleanField(default=False)

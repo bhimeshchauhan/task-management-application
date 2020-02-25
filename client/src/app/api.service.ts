@@ -17,4 +17,55 @@ export class ApiService {
     );
   }
 
+  getAllTasks(): Observable<any> {
+    return this.http.get(this.baseUrl + '/task/',
+      {headers: this.httpHeaders}
+    );
+  }
+
+  getOneProject(id): Observable<any> {
+    return this.http.get(this.baseUrl + '/project/' + id + '/',
+      {headers: this.httpHeaders}
+    );
+  }
+
+  createProject(project): Observable<any> {
+    const payload = {
+      name: project.name,
+      description: project.description,
+      start: project.start,
+      avatar: project.avatar
+    }
+    return this.http.post(this.baseUrl + '/project/', payload,
+      {headers: this.httpHeaders}
+    );
+  }
+
+  createTask(task): Observable<any> {
+    const payload = {
+      name: task.name,
+      description: task.description,
+      start: task.start,
+      end: task.end,
+      projectId: task.projectId,
+      complete: task.complete
+    }
+    return this.http.post(this.baseUrl + '/task/', payload,
+      {headers: this.httpHeaders}
+    );
+  }
+
+
+  updateProject(project): Observable<any> {
+    const payload = {
+      name: project.name,
+      description: project.description,
+      start: project.start,
+      avatar: project.avatar
+    }
+    return this.http.post(this.baseUrl + '/project/', payload,
+      {headers: this.httpHeaders}
+    );
+  }
+
 }

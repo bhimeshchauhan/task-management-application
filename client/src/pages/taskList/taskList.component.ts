@@ -1,26 +1,19 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import { ApiService } from '../../app/api.service';
 import {MatTableDataSource} from '@angular/material/table';
+import { ViewTaskIconComponent } from '../../app/components/view-task-icon/view-task-icon.component';
 
-export interface UserData {
+export interface Tasks {
   id: string;
   name: string;
   description: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
+  complete: boolean;
+  view: any;
 }
-
-/** Constants used to fill up our data base. */
-const NAMES: string[] = [
-  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
-  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
-];
-
-const DESCRIPTION: string[] = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-  'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'
-];
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -29,25 +22,38 @@ const DESCRIPTION: string[] = [
   selector: 'task-list',
   styleUrls: ['./taskList.component.less'],
   templateUrl: './taskList.component.html',
+  providers: [ApiService]
 })
-export class TableOverviewExample implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'description', 'start', 'end'];
-  dataSource: MatTableDataSource<UserData>;
+export class TableOverview implements OnInit {
+  displayedColumns: string[] = ['id', 'name', 'description', 'start', 'end', 'complete', 'view'];
+  dataSource: MatTableDataSource<Tasks>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor() {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
+  constructor(private api: ApiService) {
+    const tasks = [];
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    this.dataSource = new MatTableDataSource(tasks);
   }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.getTasks();
+  }
+
+  getTasks = () => {
+    this.api.getAllTasks().subscribe(
+      data => {
+        data.start = this.formatDate(new Date(data.start))
+        data.end = this.formatDate(new Date(data.end))
+        this.dataSource = data
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   applyFilter(event: Event) {
@@ -58,40 +64,18 @@ export class TableOverviewExample implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-}
+  formatDate = (date) => {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
 
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
 
-function formatDate(date) {
-  var monthNames = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
-  ];
-
-  var day = date.getDate();
-  var monthIndex = date.getMonth();
-  var year = date.getFullYear();
-
-  return day + ' ' + monthNames[monthIndex] + ' ' + year;
-}
-
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-  const description = DESCRIPTION[Math.round(Math.random() * (DESCRIPTION.length - 1))];
-  const start = randomDate(new Date(2012, 0, 1), new Date());
-  const end = randomDate(new Date(2012, 0, 1), new Date());
-  return {
-    id: id.toString(),
-    name: name,
-    description: description,
-    start: formatDate(start),
-    end: formatDate(end)
-  };
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  }
 }
