@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, SimpleChanges, Input} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import { ApiService } from '../../app/api.service';
@@ -30,7 +30,10 @@ export class TableOverview implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
+  @Input()
+  projectId: string;
+  @Input()
+  title: string;
   constructor(private api: ApiService) {
     const tasks = [];
     // Assign the data to the data source for the table to render
@@ -40,17 +43,17 @@ export class TableOverview implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.getTasks();
+    this.getTasksById(this.projectId);
   }
   ngOnChanges(changes: SimpleChanges) {
-     if (changes.hero.previousValue) {
-       // console.log('Old hero is: ', changes.hero.previousValue.name);
-       this.oldHero = changes.hero.previousValue.name;
+     if (changes.projectId.previousValue !== changes.projectId.currentValue) {
+       this.projectId = changes.projectId.currentValue;
+       this.getTasksById(changes.projectId.currentValue)
      }
    }
 
-  getTasks = () => {
-    this.api.getAllTasks().subscribe(
+  getTasksById = (projectId) => {
+    this.api.getTasksByProject(projectId).subscribe(
       data => {
         data.start = this.formatDate(new Date(data.start))
         data.end = this.formatDate(new Date(data.end))

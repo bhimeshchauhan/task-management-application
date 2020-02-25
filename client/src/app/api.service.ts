@@ -25,9 +25,8 @@ export class ApiService {
   }
 
   getTasksByProject(id): Observable<any> {
-    return this.http.get(this.baseUrl + '/task/getByProjectId/' + id + '/',
-      {headers: this.httpHeaders}
-    );
+    const taskList = this.getAllTasks()
+    return (taskList.pipe(map(item => item.filter(list => list.projectId === id))))
   }
 
   getOneProject(id): Observable<any> {
