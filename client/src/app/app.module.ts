@@ -23,7 +23,8 @@ import { ViewTaskComponent } from './components/view-task/view-task.component';
 const routes: Routes = [
     { path: '', component: ViewProjectComponent },
     { path: 'project', component: EditProjectComponent },
-    { path: 'project/:id', component: ViewProjectByIdComponent }
+    { path: 'project/:id', component: ViewProjectByIdComponent },
+    { path: 'project/:id/task/:id', component: ViewTaskComponent }
 ];
 
 

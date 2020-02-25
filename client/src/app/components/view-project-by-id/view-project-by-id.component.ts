@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ViewProjectByIdComponent implements OnInit {
   dataLoaded: Promise<boolean>
   projects:any = <any>{}
-  id: number
+  id: number;
   constructor(
     private activatedRoute: ActivatedRoute,
     private api: ApiService){

@@ -31,7 +31,6 @@ export class ViewProjectComponent implements OnInit {
     this.selectedProject = project.id;
   }
   ViewProjectById = (project) => {
-    console.log('project is clicked', project)
     this.router.navigate(['./project/'+project.id]);
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -7,8 +8,10 @@ import { Location } from '@angular/common';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  constructor(private _location: Location){}
+  constructor(private _location: Location,
+    private router: Router){}
   previousPage = () => {
-    this._location.back();
+    this.router.navigate(['/']);
+    // this._location.back();
   }
 }

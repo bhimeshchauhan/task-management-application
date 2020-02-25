@@ -42,6 +42,12 @@ export class TableOverview implements OnInit {
     this.dataSource.sort = this.sort;
     this.getTasks();
   }
+  ngOnChanges(changes: SimpleChanges) {
+     if (changes.hero.previousValue) {
+       // console.log('Old hero is: ', changes.hero.previousValue.name);
+       this.oldHero = changes.hero.previousValue.name;
+     }
+   }
 
   getTasks = () => {
     this.api.getAllTasks().subscribe(
